@@ -14,6 +14,37 @@
             min-height: 100vh;
             color: #e0e0e0;
         }
+
+        .navbar-custom {
+            background: rgba(0, 0, 0, 0.9);
+            border-bottom: 3px solid #e94560;
+            padding: 10px 20px;
+        }
+
+        .navbar-brand img {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #e94560;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+
+        /* this was so fun to make sir */
+        .navbar-brand img:hover {
+            transform: rotate(360deg) scale(1.2);
+            box-shadow: 0 0 15px #e94560;
+        }
+
+        .nav-link {
+            color: #e0e0e0 !important;
+            font-weight: 500;
+            margin: 0 10px;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #e94560 !important;
+            text-shadow: 0 0 10px #e94560;
+        }
         
         .sidebar {
             background: rgba(0, 0, 0, 0.85);
@@ -198,7 +229,7 @@
         .alert {
             background: rgba(233, 69, 96, 0.2);
             border: 2px solid #e94560;
-            color: #0f3460;
+            color: #ffffff; /* Improved visibility */
             border-radius: 15px;
         }
         
@@ -239,22 +270,51 @@
                 rgba(233, 69, 96, 0.03) 20px
             );
         }
+
+        .jujuhigh {
+            color: #e94560;
+            font-weight: bold;
+            text-shadow: 0 0 10px #e94560;
+            font-size: 1.5rem;
+        }
+
     </style>
 </head>
 <body>
-    <!-- hi sir -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <img src="https://i.pinimg.com/736x/62/fb/19/62fb1939b1f00d25be8657c29983b893.jpg" alt="Logo" class="rounded-circle">
+            </a>
+            <ul class="navbar-nav ms-auto">
+                <li class="jujuhigh"><a class="nav-link h3" href="index.html">Jujutsu High School</a></li>
+            </ul>
+            <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="notebooks.html">Virtual Notebook</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tasks.html">Tasks</a></li>
+                    <li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div class="cursed-energy"></div>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3 col-lg-2 sidebar">
-                <h3><i class="bi bi-shield-shaded"></i> Jujutsu High Notebook</h3>
+                <h3><i class="bi bi-shield-shaded"></i> Tokyo Jujutsu High</h3>
                 <p class="small text-light mb-3">Jujutsu High Training Portal</p>
                 
                 <div class="search-box">
                     <input type="text" id="searchInput" class="form-control" placeholder="Search classes...">
                 </div>
-                
-                <div id="notebookList">
+
+                <div id="notebookList" class="mb-4">
                     <div class="notebook-item" onclick="openDashboard('Cursed Energy Basics')">
                         Cursed Energy Basics
                     </div>
@@ -292,6 +352,8 @@
                         Reverse Cursed Technique
                     </div>
                 </div>
+                <hr style="border-color: #e94560;">
+                <button class="btn btn-custom w-100" onclick="window.location.href='logout.html'">Logout</button>
             </div>
             
             <div class="col-md-9 col-lg-10 main-content">
@@ -376,6 +438,7 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
     let totalNotebooks = 12;
     let currentSubject = "";
