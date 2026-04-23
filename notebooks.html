@@ -242,6 +242,7 @@
     </style>
 </head>
 <body>
+    <!-- hi sir -->
     <div class="cursed-energy"></div>
     <div class="container-fluid">
         <div class="row">
@@ -351,7 +352,7 @@
                 </div>
 
                 <div id="dashboardSection" class="dashboard">
-                    <h2 id="dashboardTitle" class="mb-3">🔮 Subject Domain</h2>
+                    <h2 id="dashboardTitle" class="mb-3">Subject Domain</h2>
                     <p id="dashboardInfo">Subject information will appear here.</p>
                     
                     <div class="mt-4">
@@ -370,8 +371,6 @@
         <div class="container">
             <p>© 2026 Jujutsu High - Tokyo Branch. All cursed energy reserved.</p>
             <p>
-                <a href="https://www.depEd.gov.ph" target="_blank">DepEd</a> | 
-                <a href="https://www.ched.gov.ph" target="_blank">CHED</a> | 
                 <a href="https://jujutsu-kaisen.fandom.com/wiki/Jujutsu_Kaisen_Wiki" target="_blank">Jujutsu Kaisen Wiki</a>
             </p>
         </div>
@@ -381,16 +380,76 @@
     let totalNotebooks = 12;
     let currentSubject = "";
 
+    // different colors cause super fun!
+    const subjects = {
+        "Cursed Energy Basics": {
+            color: "#e94560", // red cause JJK is red usually
+            intro: "Fundamentals of cursed energy flow, perception, and control."
+        },
+        "Barrier Geometry": {
+            color: "#4ecca3", // barrier just feels green
+            intro: "Advanced barrier construction, shapes, and layered defense."
+        },
+        "Binding Vows": {
+            color: "#f1c40f", // binding vows feel heavenly so golden
+            intro: "Oaths that amplify techniques in exchange for strict conditions."
+        },
+        "Cursed Tool Proficiency": {
+            color: "#9b59b6", // one of the best cursed tool users, maki (pre-awakening), is known for purple and green
+            intro: "Training in handling and synchronizing with cursed tools."
+        },
+        "Veil Deployment": {
+            color: "#3498db", // blue feels enclosed
+            intro: "Creating and maintaining veils to isolate cursed activity."
+        },
+        "Black Flash Theory": {
+            color: "#ff6b6b", // black flashes are black and red so red
+            intro: "Understanding the precise timing behind Black Flash."
+        },
+        "Shikigami Manifestation": {
+            color: "#2ecc71", // summoning in general feels green
+            intro: "Summoning, controlling, and maintaining shikigami forms."
+        },
+        "Curse Classifications": {
+            color: "#e67e22", // this feels orange because its classifying, no real reason here
+            intro: "Identifying curses by grade, nature, and manifestation type."
+        },
+        "Curse Identification": {
+            color: "#1abc9c", // tracking reminds me of green, also no reason
+            intro: "Field techniques to detect, track, and catalog curses."
+        },
+        "Anti-Domain Techniques": {
+            color: "#f39c12", // one of the most popular domains is Malevolent Shrine which is red, orange, and black, and the only way to beat it is to use simple domain or other anti-domain techniques
+            intro: "Countermeasures against domain expansions and barriers."
+        },
+        "Cursed Energy Reinforcement": {
+            color: "#16a085", // teal-ish blue or something feels like a stronger blue (cursed energy is usually blue)
+            intro: "Reinforcing the body with cursed energy for combat."
+        },
+        "Reverse Cursed Technique": {
+            color: "#8e44ad", // purple feels special and RCT is one of the rarest feats in all of JJK
+            intro: "Applying cursed energy inversely for healing and restoration."
+        }
+    };
+
     // opens the specific subject domain and hides the main screen with all the notebooks
     function openDashboard(subject) {
         currentSubject = subject;
 
-        document.getElementById("welcomeSection").style.display = "none";
-        document.getElementById("dashboardSection").classList.add("active");
+        document.getElementById("welcomeSection").style.display = "none"; // hide welcome
+        document.getElementById("dashboardSection").classList.add("active"); // show dashboard
 
-        document.getElementById("dashboardTitle").innerHTML = subject + " Domain";
+        const config = subjects[subject] || { color: "#e94560", intro: "" }; // checks the part above this for the settings for the subject
+
+        const titleEl = document.getElementById("dashboardTitle"); // some visual stuff
+        titleEl.innerHTML = subject + " Domain";
+        titleEl.style.color = config.color;
+        titleEl.style.textShadow = "0 0 15px " + config.color;
+
         document.getElementById("dashboardInfo").innerHTML =
-            "Welcome to the " + subject + " training domain. Here you can see your notes, remaining tasks, and monitor your progress.";
+            config.intro +
+            " Welcome to the " + subject +
+            " training domain. Here you can see your notes, remaining tasks, and monitor your progress.";
 
         document.getElementById("dashboardContent").innerHTML =
             "<div class='alert alert-dark text-light mb-0'>" +
@@ -399,29 +458,34 @@
     }
 
     // displays dummy notes for the selected subject
-    function showNotes() {
+    function showNotes() { // to save time and meet the requirements i added a for loop
         let notesHTML = "<h4>Notes for " + currentSubject + "</h4><ul>";
-        for (let i = 1; i <= 5; i++) {
+        for (let i = 1; i <= 5; i++) {// set i to 1, check if i is less than or equal to 5, then add i using an increment every time the code block under this is executed (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Increment)
             notesHTML += "<li>Note " + i + " - Important note for " + currentSubject + "</li>";
-        }
-        notesHTML += "</ul>";
-        document.getElementById("dashboardContent").innerHTML = notesHTML;
+        }// basic concatenation of text and variable
+        notesHTML += "</ul>"; // close the ul
+        document.getElementById("dashboardContent").innerHTML = notesHTML; // basically just prints everything
     }
 
     // displays mission/task progress for the selected subject (including percentage!)
     function showTasks() {
-        let taskCount = 4;
-        let completed = 1;
-        let remaining = taskCount - completed;
+        let taskCount = Math.floor(Math.random() * (7 - 4 + 1)) + 4; // task amount is between 4 and 7
+        let completed = Math.floor(Math.random() * 4) + 1; // just a random number between 1 and 3
+        let remaining = taskCount - completed; // number of "tasks left to do" even if you can't really do anything
 
-        document.getElementById("dashboardContent").innerHTML =
+        // the side effect of this ^ is that it randomly generates a number every time you click the button
+
+        document.getElementById("dashboardContent").innerHTML = // just writing a bunch of text to label the values
             "<h4>Tasks for " + currentSubject + "</h4>" +
             "<p>Total missions: " + taskCount + "</p>" +
             "<p>Completed: " + completed + "</p>" +
             "<p>Remaining: " + remaining + "</p>" +
             "<div class='progress mt-3'>" +
             "<div class='progress-bar bg-danger' style='width: " + (completed / taskCount * 100) + "%'>" +
-            Math.round(completed / taskCount * 100) + "%</div>" +
+            Math.round(completed / taskCount * 100) + "%</div>" + // percentage maker
+
+            // also i learned that doing + "%</div>" is so much easier than + "%" + "<div>"
+
             "</div>";
     }
 
@@ -432,22 +496,19 @@
         currentSubject = "";
     }
 
-    // search bar to search through sidebar and main grids (this section alone took an hour to make but its so cool)
     document.getElementById("searchInput").addEventListener("keyup", function () {
-        let searchValue = this.value.toLowerCase();
+        let searchValue = this.value.toLowerCase(); // keyup checks every time you release a key on the keyboard so its SUPER smooth
 
-        // filters the sidebar items
-        let notebookItems = document.querySelectorAll(".notebook-item");
+        let notebookItems = document.querySelectorAll(".notebook-item"); // this is for the sidebar
         notebookItems.forEach(item => {
-            let text = item.textContent.toLowerCase();
-            item.style.display = text.includes(searchValue) ? "block" : "none";
+            let text = item.textContent.toLowerCase(); // makes it not case sensitive by reading the input as lowercase
+            item.style.display = text.includes(searchValue) ? "block" : "none"; // checks if title has the thing you inputted
         });
 
-        // filters the main grid items
-        let notebookCards = document.querySelectorAll(".notebook-card");
+        let notebookCards = document.querySelectorAll(".notebook-card"); // this is for the actual cards
         notebookCards.forEach(card => {
-            let title = card.querySelector("h5").textContent.toLowerCase();
-            card.style.display = title.includes(searchValue) ? "block" : "none";
+            let title = card.querySelector("h5").textContent.toLowerCase(); // again it makes it case insensitive
+            card.style.display = title.includes(searchValue) ? "block" : "none"; // checks if the title includes what you inputted
         });
     });
     </script>
