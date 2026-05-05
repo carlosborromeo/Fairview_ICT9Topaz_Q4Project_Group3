@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jujutsu High Virtual Notebook</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Google Sans', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+        }
+
+        .navbar-custom {
+            background: rgba(0, 0, 0, 0.9);
+            border-bottom: 3px solid #e94560;
+            padding: 10px 20px;
+        }
+
+        .navbar-brand img {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #e94560;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+
+        /* this was so fun to make sir */
+        .navbar-brand img:hover {
+            transform: rotate(360deg) scale(1.2);
+            box-shadow: 0 0 15px #e94560;
+        }
+
+        .nav-link {
+            color: #e0e0e0 !important;
+            font-weight: 500;
+            margin: 0 10px;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #e94560 !important;
+            text-shadow: 0 0 10px #e94560;
+        }
+        
+        .sidebar {
+            background: rgba(0, 0, 0, 0.85);
+            min-height: 100vh;
+            padding: 20px;
+            border-right: 3px solid #e94560;
+            border-bottom: 3px solid #e94560;
+            box-shadow: 5px 0 20px rgba(233, 69, 96, 0.3);
+        }
+        
+        .sidebar h3 {
+            color: #e94560;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-shadow: 0 0 10px #e94560;
+            font-size: 1.5rem;
+        }
+        
+        .search-box {
+            margin-bottom: 20px;
+        }
+        
+        .search-box input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #e94560;
+            color: white;
+            border-radius: 10px;
+            padding: 10px 15px;
+        }
+        
+        .search-box input::placeholder {
+            color: #aaa;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            box-shadow: 0 0 15px #e94560;
+        }
+        
+        .notebook-item {
+            padding: 12px 15px;
+            margin: 8px 0;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s;
+            color: #fff;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+            background: rgba(233, 69, 96, 0.1);
+        }
+        
+        .notebook-item:hover {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            transform: translateX(8px);
+            border-left: 3px solid #e94560;
+            box-shadow: 0 0 15px #e94560;
+        }
+        
+        .main-content {
+            padding: 40px;
+            color: #e0e0e0;
+        }
+        
+        .main-content h1 {
+            color: #e94560;
+            text-shadow: 0 0 20px #e94560;
+            font-weight: bold;
+        }
+        
+        .tasks-grid {
+            display: grid;
+            align-items: center;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0px;
+            margin-top: 30px;
+        }
+        
+        .tasks-options {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #e94560;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tasks-options img {
+            width: 50%;
+            height: 140px;
+            object-fit: scale-down;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(233, 69, 96, 0.3);
+        }
+
+        .tasks-options h5 {
+            font-weight: bold;
+            color: #e0e0e0;
+            margin: 0;  
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+
+        .tasks-options::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(233, 69, 96, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tasks-options::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(233, 69, 96, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .notebook-card img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(233, 69, 96, 0.3);
+        }
+        
+        .notebook-card:hover::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(233, 69, 96, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .notebook-card:hover::before {
+            opacity: 1;
+        }
+        
+        .notebook-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(233, 69, 96, 0.5);
+        }
+        
+        .notebook-card h5 {
+            font-weight: bold;
+            color: #e0e0e0;
+            margin: 0;  
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+        
+        .dashboard {
+            display: none;
+            background: rgba(0, 0, 0, 0.9);
+            border: 3px solid #e94560;
+            border-radius: 20px;
+            padding: 40px;
+            color: #e0e0e0;
+            box-shadow: 0 0 50px rgba(233, 69, 96, 0.5);
+            position: relative;
+        }
+        
+        .dashboard::before {
+            content: '𖣐';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 2rem;
+            color: #e94560;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .dashboard.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .btn-custom {
+            margin: 5px;
+            border-radius: 25px;
+            padding: 10px 25px;
+            font-weight: bold;
+            border: 2px solid #e94560;
+            background: rgba(233, 69, 96, 0.2);
+            color: #e0e0e0;
+            transition: all 0.3s;
+        }
+        
+        .btn-custom:hover {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            box-shadow: 0 0 20px #e94560;
+            transform: scale(1.05);
+        }
+        
+        .alert {
+            background: rgba(233, 69, 96, 0.2);
+            border: 2px solid #e94560;
+            color: #ffffff; 
+            border-radius: 15px;
+        }
+        
+        footer {
+            background: rgba(0, 0, 0, 0.9);
+            border-top: 3px solid #e94560;
+            color: #e0e0e0;
+            padding: 20px 0;
+            margin-top: 40px;
+            text-align: center;
+            box-shadow: 0 -5px 20px rgba(233, 69, 96, 0.3);
+        }
+        
+        footer a {
+            color: rgb(255, 215, 120);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        footer a:hover {
+            color: #e94560;
+            text-shadow: 0 0 10px #e94560;
+        }
+        
+        .cursed-energy {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(233, 69, 96, 0.03) 10px,
+                rgba(233, 69, 96, 0.03) 20px
+            );
+        }
+
+        .jujuhigh {
+            color: #e94560;
+            font-weight: bold;
+            text-shadow: 0 0 10px #e94560;
+            font-size: 1.5rem;
+        }
+        
+        .dropdown-content {
+            display: flex;
+            position: relative;
+            background: transparent;
+        }
+        
+        #Ongoing-Tasks {
+            display: block;
+        }
+        
+        .table {
+            background: rgba(66, 11, 20, 0.1);
+            border: 2px solid #e94560;
+            color: #e0e0e0;
+            border-radius: 10px;
+            margin-top: 4%;
+        }
+        .table text {
+            font-weight: bold;
+            color: #e0e0e0;
+            margin: 0;  
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+     
+
+    </style>
+</head>
+<body>    
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <img src="https://i.pinimg.com/736x/62/fb/19/62fb1939b1f00d25be8657c29983b893.jpg" alt="Logo" class="rounded-circle">
+            </a>
+            <ul class="navbar-nav ms-auto">
+                <li class="jujuhigh"><a class="nav-link h3" href="index.html">Jujutsu High School</a></li>
+            </ul>
+            <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="notebooks.html">Virtual Notebook</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tasks.html">Tasks</a></li>
+                    <li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="cursed-energy"></div>
+    <div class="container-fluid">
+            
+            <div class="col-md-9 col-lg-10 main-content">
+                <h1 class="text-center mb-2">Jujutsu High Training Portal</h1>
+                <p class="text-center lead">Access your classes' domains by clicking on the notebooks</p>
+                
+                <div id="welcomeSection">
+                    <div class="tasks-options row g-8">
+                        <div class="tasks-options col-md-4" onclick="switchtasks('Missed Tasks')">
+                            <img src="https://i.pinimg.com/736x/62/fb/19/62fb1939b1f00d25be8657c29983b893.jpg" alt="Missed">
+                            <h5>Missed</h5>
+                            <div id="Missed-Tasks" class="dropdown-content" style="display: block;">
+                            </div>
+                        </div>
+                        <div class="tasks-options col-md-4" onclick="switchtasks('Completed Tasks')">
+                            <img src="https://i.pinimg.com/736x/62/fb/19/62fb1939b1f00d25be8657c29983b893.jpg" alt="Completed">
+                            <h5>Completed</h5>
+                            <div id="Completed-Tasks" class="dropdown-content">
+                            </div>
+                        </div>
+                        <div class="tasks-options col-md-4" onclick="switchtasks('Ongoing Tasks')">
+                            <img src="https://i.pinimg.com/736x/62/fb/19/62fb1939b1f00d25be8657c29983b893.jpg" alt="Ongoing">
+                            <h5>Ongoing</h5>
+                            <div id="Ongoing-Tasks" class="dropdown-content">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                <div id="dashboardSection" class="dashboard">
+                    <h2 id="dashboardTitle" class="mb-3">Subject Domain</h2>
+                    <p id="dashboardInfo">Subject information will appear here.</p>
+                    
+                    <div class="mt-4">
+                        <button class="btn btn-custom" onclick="showNotes()">View Notes</button>
+                        <button class="btn btn-custom" onclick="showTasks()">View Tasks</button>
+                        <button class="btn btn-custom" onclick="closeDashboard()">Exit Domain</button>
+                    </div>
+                    
+                    <div id="dashboardContent" class="mt-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>© 2026 Jujutsu High - Tokyo Branch. All cursed energy reserved.</p>
+            <p>
+                <a href="https://jujutsu-kaisen.fandom.com/wiki/Jujutsu_Kaisen_Wiki" target="_blank">Jujutsu Kaisen Wiki</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    window.onload = function () {
+    const missedCard  = document.getElementById("Missed-Tasks");
+    const completedCard = document.getElementById("Completed-Tasks");
+    const ongoingCard   = document.getElementById("Ongoing-Tasks");
+
+    if (missedCard) {
+        missedCard.innerHTML  = taskrngmis(); // random table for Missed
+    }
+    if (completedCard) {
+        completedCard.innerHTML = taskrngcom(); // random table for Completed
+    }
+    if (ongoingCard) {
+        ongoingCard.innerHTML   = taskrngon(); // random table for Ongoing
+    }
+    };
+    let totalNotebooks = 12;
+    let currentSubject = "";
+
+    // different colors cause super fun!
+    const subjects = {
+        "Cursed Energy Basics": {
+            color: "#e94560", // red cause JJK is red usually
+            intro: "Fundamentals of cursed energy flow, perception, and control."
+        },
+        "Barrier Geometry": {
+            color: "#4ecca3", // barrier just feels green
+            intro: "Advanced barrier construction, shapes, and layered defense."
+        },
+        "Binding Vows": {
+            color: "#f1c40f", // binding vows feel heavenly so golden
+            intro: "Oaths that amplify techniques in exchange for strict conditions."
+        },
+        "Cursed Tool Proficiency": {
+            color: "#9b59b6", // one of the best cursed tool users, maki (pre-awakening), is known for purple and green
+            intro: "Training in handling and synchronizing with cursed tools."
+        },
+        "Veil Deployment": {
+            color: "#3498db", // blue feels enclosed
+            intro: "Creating and maintaining veils to isolate cursed activity."
+        },
+        "Black Flash Theory": {
+            color: "#ff6b6b", // black flashes are black and red so red
+            intro: "Understanding the precise timing behind Black Flash."
+        },
+        "Shikigami Manifestation": {
+            color: "#2ecc71", // summoning in general feels green
+            intro: "Summoning, controlling, and maintaining shikigami forms."
+        },
+        "Curse Classifications": {
+            color: "#e67e22", // this feels orange because its classifying, no real reason here
+            intro: "Identifying curses by grade, nature, and manifestation type."
+        },
+        "Curse Identification": {
+            color: "#1abc9c", // tracking reminds me of green, also no reason
+            intro: "Field techniques to detect, track, and catalog curses."
+        },
+        "Anti-Domain Techniques": {
+            color: "#f39c12", // one of the most popular domains is Malevolent Shrine which is red, orange, and black, and the only way to beat it is to use simple domain or other anti-domain techniques
+            intro: "Countermeasures against domain expansions and barriers."
+        },
+        "Cursed Energy Reinforcement": {
+            color: "#16a085", // teal-ish blue or something feels like a stronger blue (cursed energy is usually blue)
+            intro: "Reinforcing the body with cursed energy for combat."
+        },
+        "Reverse Cursed Technique": {
+            color: "#8e44ad", // purple feels special and RCT is one of the rarest feats in all of JJK
+            intro: "Applying cursed energy inversely for healing and restoration."
+        }
+    };
+    const tasks = {
+        "Missed Tasks":   {
+            color: "#e94560" // Same color as the website as to not ruin any special effects
+        },
+        "Completed Tasks":   {
+            color: "#e94560" // Same color as the website as to not ruin any special effect
+        },
+        "Ongoing Tasks":    {
+            color: "#e94560" // Same color as the website as to not ruin any special effect
+        }
+    };
+    
+
+    const tasksopmis = [
+        "Exorcise a grade 3 curse haunting a school basement.",            
+        "Do 30 minutes of Shikigami Training in the courtyard.",
+        "Reinforce your body with cursed energy for 30 minutes of combat drills.",
+        "Deploy a veil around the shibuya district to contain curse activity.",
+        "Investigate an incident regarding a Heavenly Restriction user.",
+        "Practice reverse cursed technique on minor injuries in the infirmary.",
+        "Arrest Bumta on the case of pedophilia and child abuse.",
+        "Hunt grade 1 curses on an exorcism mission in a rural village.",
+        "Defend Shibuya from a curse invasion.",
+        "Patrol the city for unregistered curses before people arrive."
+    ];
+
+    const tasksopon = [
+        "Investigate the death of a student in the school basement.",            
+        "Fix the rubble surrounding shibuya.",
+        "Practice using Cursed Energy Reinforcement on a grade 1 curse.",
+        "Train domain expansion under the guidance of Satoru Gojo.",
+        "Find the cause of the death of Naobito Zenin.",
+        "Investigate the mysterious disappearance of a student.",
+        "Protect a civilian from a grade 2 curse.",
+        "Find the curse with the patchwork face.",
+        "Defeat Ryomen Sukuna."
+    ];
+
+    const tasksopcom = [
+        "Assist in the training of first-year students.",
+        "Help maintain the school grounds and facilities.",
+        "Participate in a group training exercise with classmates.",
+        "Attend a lecture on advanced cursed techniques.",
+        "Collaborate on a research project about curse classifications.",
+        "Join a team to investigate a minor curse incident in the city.",
+        "Help organize the school's arsenal of cursed objects and literature.",
+        "Enter the culling game",
+        "Obtain the Inverted Spear of Heaven from the Zenin family vault.",
+        "Obtain a cursed technique"
+    ];
+
+    // How tasks are when the site loads.
+    function taskrngmis() {
+        let tasknow = "<table class='table table-dark table-sm mb-0'>";
+        tasknow += "<thead><tr><th>Mission</th></tr></thead>";
+        tasknow += "<tbody>";
+
+        const pool = tasksopmis.slice();
+        
+        const howMany = Math.min(
+        pool.length,
+        Math.floor(Math.random() * 3) + 5
+        );
+
+
+    for (let i = 0; i < howMany; i++) {
+        const randomIndex = Math.floor(Math.random() * pool.length);
+        const task = pool[randomIndex];
+
+        pool.splice(randomIndex, 1);
+
+        tasknow += "<tr><td>" + task + "</td></tr>";
+    }
+
+
+    tasknow += "</tbody></table>";
+    return tasknow;
+    }
+
+    function taskrngon() {
+        let tasknow = "<table class='table table-dark table-sm mb-0'>";
+        tasknow += "<thead><tr><th>Mission</th></tr></thead>";
+        tasknow += "<tbody>";
+
+        const pool = tasksopon.slice();
+        
+        const howMany = Math.min(
+        pool.length,
+        Math.floor(Math.random() * 3) + 5
+        );
+
+
+    for (let i = 0; i < howMany; i++) {
+        const randomIndex = Math.floor(Math.random() * pool.length);
+        const task = pool[randomIndex];
+
+        pool.splice(randomIndex, 1);
+
+        tasknow += "<tr><td>" + task + "</td></tr>";
+    }
+
+
+    tasknow += "</tbody></table>";
+    return tasknow;
+    }
+
+    function taskrngcom() {
+        let tasknow = "<table class='table table-dark table-sm mb-0'>";
+        tasknow += "<thead><tr><th>Mission</th></tr></thead>";
+        tasknow += "<tbody>";
+
+        const pool = tasksopcom.slice();
+        
+        const howMany = Math.min(
+        pool.length,
+        Math.floor(Math.random() * 2) + 3
+        );
+
+
+    for (let i = 0; i < howMany; i++) {
+        const randomIndex = Math.floor(Math.random() * pool.length);
+        const task = pool[randomIndex];
+
+        pool.splice(randomIndex, 1);
+
+        tasknow += "<tr><td>" + task + "</td></tr>";
+    }
+
+
+    tasknow += "</tbody></table>";
+    return tasknow;
+    }
+ 
+
+    // opens the specific subject domain and hides the main screen with all the notebooks
+    function openDashboard(subject) {
+        currentSubject = subject;
+
+        document.getElementById("welcomeSection").style.display = "none"; // hide welcome
+        document.getElementById("dashboardSection").classList.add("active"); // show dashboard
+
+        const config = subjects[subject] || { color: "#e94560", intro: "" }; // checks the part above this for the settings for the subject
+
+        const titleEl = document.getElementById("dashboardTitle"); // some visual stuff
+        titleEl.innerHTML = subject + " Domain";
+        titleEl.style.color = config.color;
+        titleEl.style.textShadow = "0 0 15px " + config.color;
+
+        document.getElementById("dashboardInfo").innerHTML =
+            config.intro +
+            " Welcome to the " + subject +
+            " training domain. Here you can see your notes, remaining tasks, and monitor your progress.";
+
+        document.getElementById("dashboardContent").innerHTML =
+            "<div class='alert alert-dark text-light mb-0'>" +
+            "<strong>Subject:</strong> " + subject + "<br>" +
+            "</div>";
+    }
+
+    // displays dummy notes for the selected subject
+    function showNotes() { // to save time and meet the requirements i added a for loop
+        let notesHTML = "<h4>Notes for " + currentSubject + "</h4><ul>";
+        for (let i = 1; i <= 5; i++) {// set i to 1, check if i is less than or equal to 5, then add i using an increment every time the code block under this is executed (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Increment)
+            notesHTML += "<li>Note " + i + " - Important note for " + currentSubject + "</li>";
+        }// basic concatenation of text and variable
+        notesHTML += "</ul>"; // close the ul
+        document.getElementById("dashboardContent").innerHTML = notesHTML; // basically just prints everything
+    }
+
+    // displays mission/task progress for the selected subject (including percentage!)
+    function showTasks() {
+        let taskCount = Math.floor(Math.random() * (7 - 4 + 1)) + 4; // task amount is between 4 and 7
+        let completed = Math.floor(Math.random() * 4) + 1; // just a random number between 1 and 3
+        let remaining = taskCount - completed; // number of "tasks left to do" even if you can't really do anything
+
+        // the side effect of this ^ is that it randomly generates a number every time you click the button
+
+        document.getElementById("dashboardContent").innerHTML = // just writing a bunch of text to label the values
+            "<h4>Tasks for " + currentSubject + "</h4>" +
+            "<p>Total missions: " + taskCount + "</p>" +
+            "<p>Completed: " + completed + "</p>" +
+            "<p>Remaining: " + remaining + "</p>" +
+            "<div class='progress mt-3'>" +
+            "<div class='progress-bar bg-danger' style='width: " + (completed / taskCount * 100) + "%'>" +
+            Math.round(completed / taskCount * 100) + "%</div>" + // percentage maker
+
+            // also i learned that doing + "%</div>" is so much easier than + "%" + "<div>"
+
+            "</div>";
+    }
+
+    // goes back to the main screen with the notebook grid
+    function closeDashboard() {
+        document.getElementById("dashboardSection").classList.remove("active");
+        document.getElementById("welcomeSection").style.display = "block";
+        currentSubject = "";
+    }
+
+    document.getElementById("searchInput").addEventListener("keyup", function () {
+        let searchValue = this.value.toLowerCase(); // keyup checks every time you release a key on the keyboard so its SUPER smooth
+
+        let notebookItems = document.querySelectorAll(".notebook-item"); // this is for the sidebar
+        notebookItems.forEach(item => {
+            let text = item.textContent.toLowerCase(); // makes it not case sensitive by reading the input as lowercase
+            item.style.display = text.includes(searchValue) ? "block" : "none"; // checks if title has the thing you inputted
+        });
+
+        let notebookCards = document.querySelectorAll(".notebook-card"); // this is for the actual cards
+        notebookCards.forEach(card => {
+            let title = card.querySelector("h5").textContent.toLowerCase(); // again it makes it case insensitive
+            card.style.display = title.includes(searchValue) ? "block" : "none"; // checks if the title includes what you inputted
+        });
+    });
+    </script>
+</body>
+</html>

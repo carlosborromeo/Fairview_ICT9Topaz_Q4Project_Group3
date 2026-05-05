@@ -381,6 +381,8 @@
             gap: 8px;
             text-align: center;
             padding: 16px;
+            position: relative;
+            overflow: hidden;
         }
 
         .mini-game-title {
@@ -454,6 +456,44 @@
             font-weight: bold;
             text-shadow: 0 0 10px #e94560;
             font-size: 1.5rem;
+        }
+
+        #curse-target {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        #curse-target:active {
+            transform: scale(0.9);
+        }
+
+        .black-flash-effect {
+            animation: blackFlashPulse 1s ease-out;
+        }
+
+        @keyframes blackFlashPulse {
+            0% {
+                box-shadow: 0 0 0px 0 rgba(233, 69, 96, 0.0), 0 0 0px 0 rgba(255, 255, 255, 0.0);
+                background: rgba(0, 0, 0, 0.7);
+            }
+            20% {
+                box-shadow: 0 0 40px 10px rgba(233, 69, 96, 1), 0 0 80px 20px rgba(255, 255, 255, 0.9);
+                background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(233,69,96,0.7) 30%, rgba(0,0,0,0.9) 70%);
+            }
+            50% {
+                box-shadow: 0 0 60px 18px rgba(233, 69, 96, 1), 0 0 120px 40px rgba(255, 255, 255, 1);
+                background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, rgba(233,69,96,0.9) 25%, rgba(0,0,0,1) 70%);
+            }
+            80% {
+                box-shadow: 0 0 40px 10px rgba(233, 69, 96, 0.8), 0 0 80px 20px rgba(255, 255, 255, 0.7);
+                background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(233,69,96,0.6) 30%, rgba(0,0,0,0.9) 70%);
+            }
+            100% {
+                box-shadow: 0 0 0px 0 rgba(233, 69, 96, 0.0), 0 0 0px 0 rgba(255, 255, 255, 0.0);
+                background: rgba(0, 0, 0, 0.7);
+            }
         }
     </style>
 </head>
@@ -601,14 +641,15 @@
 
                         <div class="panel">
                             <div class="panel-header">
-                                <div class="panel-title">Minigame</div>
-                                <span class="chippychipchip">abcdefghijklmnopqrstuvwxyz</span>
+                                <div class="panel-title">Fun Corner</div>
+                                <span class="chippychipchip">Combat Simulation</span>
                             </div>
                             <div class="panel-body">
                                 <div class="mini-game-shell" id="minigameContainer">
-                                    <div class="mini-game-title">ginimame</div>
-                                    <div class="mini-game-note">punch the thing</div>
-                                    <button class="btn-custom" onclick="simulateMinigame()">Play</button>
+                                    <div class="mini-game-title">Punch the Dummy!</div>
+                                    <div class="mini-game-note">Hit the dummy as much as you can!</div>
+                                    <div id="scoreDisplay" class="fw-bold text-danger">Score: 0</div>
+                                    <img id="curse-target" src="https://cdn-icons-png.flaticon.com/512/1071/1071098.png" alt="Curse" onclick="simulateMinigame()">
                                 </div>
                             </div>
                         </div>
@@ -618,6 +659,14 @@
             </div>
         </div>
     </div>
+
+    <audio id="blackFlash1">
+        <source src="blackFlash1" type="audio/mpeg">
+    </audio>
+
+    <audio id="blackFlash2">
+        <source src="blackFlash2" type="audio/mpeg">
+    </audio>
 
     <footer>
         <div class="container">
@@ -709,11 +758,45 @@
             });
         }
 
+        let score = 0;
         function simulateMinigame() {
-            const el = document.getElementById("minigameContainer");
-            el.innerHTML =
-                "<div class='mini-game-title'>punchy punch</div>" +
-                "<div class='mini-game-note'>black flash!</div>";
+            score++;
+            document.getElementById("scoreDisplay").innerText = "Score: " + score;
+            const target = document.getElementById("curse-target");
+            const container = document.getElementById("minigameContainer");
+            
+            const maxX = container.clientWidth - target.clientWidth;
+            const maxY = container.clientHeight - target.clientHeight - 40;
+            
+            const newX = Math.random() * maxX;
+            const newY = Math.random() * maxY;
+            
+            target.style.position = "absolute";
+            target.style.left = newX + "px";
+            target.style.top = newY + "px";
+        
+            let roll = Math.floor(Math.random() * 2) + 1;
+
+            if (roll === 1) {
+                const sfx1 = document.getElementById("blackFlash1");
+                const sfx2 = document.getElementById("blackFlash2");
+                if (sfx1) {
+                    sfx1.currentTime = 0;
+                    sfx1.play();
+                }
+                if (sfx2) {
+                    sfx2.currentTime = 0;
+                    sfx2.play();
+                }
+                container.classList.remove("black-flash-effect");
+                void container.offsetWidth;
+                container.classList.add("black-flash-effect");
+                setTimeout(function () {
+                    container.classList.remove("black-flash-effect");
+                }, 1000);
+            } else {
+                console.log("Failed. Rolled: " + roll);
+            }
         }
 
         renderSchedule("Monday");
