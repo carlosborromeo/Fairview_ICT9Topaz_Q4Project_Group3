@@ -15,11 +15,13 @@
             color: #e0e0e0;
         }
 
+
         .navbar-custom {
             background: rgba(0, 0, 0, 0.9);
             border-bottom: 3px solid #e94560;
             padding: 10px 20px;
         }
+
 
         .navbar-brand img {
             width: 40px;
@@ -28,11 +30,13 @@
             transition: transform 0.5s ease, box-shadow 0.5s ease;
         }
 
+
         /* this was so fun to make sir */
         .navbar-brand img:hover {
             transform: rotate(360deg) scale(1.2);
             box-shadow: 0 0 15px #e94560;
         }
+
 
         .nav-link {
             color: #e0e0e0 !important;
@@ -40,6 +44,7 @@
             margin: 0 10px;
             transition: color 0.3s, text-shadow 0.3s;
         }
+
 
         .nav-link:hover {
             color: #e94560 !important;
@@ -134,6 +139,7 @@
             position: relative;
             overflow: hidden;
         }
+
 
         .notebook-card img {
             width: 100%;
@@ -271,6 +277,7 @@
             );
         }
 
+
         .jujuhigh {
             color: #e94560;
             font-weight: bold;
@@ -278,13 +285,16 @@
             font-size: 1.5rem;
         }
 
+
     </style>
 </head>
 <body>
 
+
         <!-- DISCLAIMER: 
             sir, I did not use any AI in making this. I am using knowledge from hours of tutorials by w3Schools, Bro Code (my favorite coding youtuber (https://youtu.be/lfmg-EJ8gm4, https://www.youtube.com/watch?v=HGTJBPNC-Gw) (i didn't finish the whole video but i skipped to the parts that are relevant to the activity)), and knowledge that i got from online forums talking about how to do xyz.
         -->
+
 
 
     <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
@@ -309,6 +319,7 @@
         </div>
     </nav>
 
+
     <div class="cursed-energy"></div>
     <div class="container-fluid">
         <div class="row">
@@ -319,6 +330,7 @@
                 <div class="search-box">
                     <input type="text" id="searchInput" class="form-control" placeholder="Search classes...">
                 </div>
+
 
                 <div id="notebookList" class="mb-4">
                     <div class="notebook-item" onclick="openDashboard('Cursed Energy Basics')">
@@ -419,6 +431,7 @@
                     </div>
                 </div>
 
+
                 <div id="dashboardSection" class="dashboard">
                     <h2 id="dashboardTitle" class="mb-3">Subject Domain</h2>
                     <p id="dashboardInfo">Subject information will appear here.</p>
@@ -447,16 +460,24 @@
         </div>
     </footer>
 
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
     let totalNotebooks = 12;
+    // total number of notebooks you have in the portal, kind of like the class count
+
     let currentSubject = "";
+    // this will remember which subject/domain the user is currently inside (empty string means "none")
+
 
     // different colors cause super fun!
     const subjects = {
+        // this object stores settings for each subject, like a config book for your jujutsu classes
+
         "Cursed Energy Basics": {
             color: "#e94560", // red cause JJK is red usually
             intro: "Fundamentals of cursed energy flow, perception, and control."
+            // short description that will show up when you open this subject
         },
         "Barrier Geometry": {
             color: "#4ecca3", // barrier just feels green
@@ -503,49 +524,99 @@
             intro: "Applying cursed energy inversely for healing and restoration."
         }
     };
+    // https://www.w3schools.com/js/js_objects.asp
+
 
     // opens the specific subject domain and hides the main screen with all the notebooks
     function openDashboard(subject) {
+        // this function runs when you click a notebook or sidebar item
+
         currentSubject = subject;
+        // remember which subject was clicked so other functions know what we are working on
+
 
         document.getElementById("welcomeSection").style.display = "none"; // hide welcome
+        // hides the grid of notebooks so the dashboard feels like its own domain
+
         document.getElementById("dashboardSection").classList.add("active"); // show dashboard
+        // adds the "active" class so the dashboard shows up with its fancy animation
+
 
         const config = subjects[subject] || { color: "#e94560", intro: "" }; // checks the part above this for the settings for the subject
+        // looks up the subject in the subjects object, and if it somehow doesn't exist, uses a default config
+        // this "||" fallback is like saying: if subjects[subject] is broken, use the backup plan
+        // ||: https://www.w3schools.com/js/js_comparisons.asp
+
 
         const titleEl = document.getElementById("dashboardTitle"); // some visual stuff
+        // grabs the h2 element where the subject title will be shown
+
         titleEl.innerHTML = subject + " Domain";
+        // changes the text so it says which domain you entered, like "cursed energy basics domain"
+
         titleEl.style.color = config.color;
+        // changes the title color based on the subject config so each subject feels unique
+
         titleEl.style.textShadow = "0 0 15px " + config.color;
+        // adds a glow with the same color so it looks more cursed (visually)
+
 
         document.getElementById("dashboardInfo").innerHTML =
             config.intro +
             " Welcome to the " + subject +
             " training domain. Here you can see your notes, remaining tasks, and monitor your progress.";
+        // builds a full sentence using the intro text plus extra explanation for the user
+
 
         document.getElementById("dashboardContent").innerHTML =
             "<div class='alert alert-dark text-light mb-0'>" +
             "<strong>Subject:</strong> " + subject + "<br>" +
             "</div>";
+        // shows a basic info box at the bottom saying which subject you’re inside right now
+        // more complex innerHTML stuff:
+        // https://www.w3schools.com/jsref/prop_html_innerhtml.asp
     }
+
 
     // displays dummy notes for the selected subject
     function showNotes() { // to save time and meet the requirements i added a for loop
         let notesHTML = "<h4>Notes for " + currentSubject + "</h4><ul>";
+        // start building a string of html with a title and opening <ul> tag for a list
+
         for (let i = 1; i <= 5; i++) {// set i to 1, check if i is less than or equal to 5, then add i using an increment every time the code block under this is executed (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Increment)
+            // this loop repeats 5 times to make 5 fake notes for the current subject
+            // for loopify:
+            // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for
+
             notesHTML += "<li>Note " + i + " - Important note for " + currentSubject + "</li>";
+            // adds one list item per loop, like "note 1 - important note for cursed energy basics"
         }// basic concatenation of text and variable
+
         notesHTML += "</ul>"; // close the ul
+        // finishes the <ul> tag so the browser doesn't cry
+
+
         document.getElementById("dashboardContent").innerHTML = notesHTML; // basically just prints everything
+        // finally puts the whole notes list into the dashboard content area so the user can see it
     }
+
 
     // displays mission/task progress for the selected subject (including percentage!)
     function showTasks() {
         let taskCount = Math.floor(Math.random() * (7 - 4 + 1)) + 4; // task amount is between 4 and 7
+        // Math.random() gives a number from 0 to less than 1, we scale it and floor it to get a whole number between 4 and 7
+        // how to random!!:
+        // https://www.w3schools.com/js/js_random.asp
+
         let completed = Math.floor(Math.random() * 4) + 1; // just a random number between 1 and 3
+        // same idea, but now for the number of missions completed (random small progress, like a normal student)
+
         let remaining = taskCount - completed; // number of "tasks left to do" even if you can't really do anything
+        // simple subtraction so we know how many missions are still waiting to be exorcised
+
 
         // the side effect of this ^ is that it randomly generates a number every time you click the button
+
 
         document.getElementById("dashboardContent").innerHTML = // just writing a bunch of text to label the values
             "<h4>Tasks for " + currentSubject + "</h4>" +
@@ -556,33 +627,72 @@
             "<div class='progress-bar bg-danger' style='width: " + (completed / taskCount * 100) + "%'>" +
             Math.round(completed / taskCount * 100) + "%</div>" + // percentage maker
 
+
             // also i learned that doing + "%</div>" is so much easier than + "%" + "<div>"
 
+
             "</div>";
+        // this whole chunk builds a bootstrap progress bar showing how far you are percentage-wise
+        // more about bootstrap progress bars i love progress bars:
+        // https://getbootstrap.com/docs/5.3/components/progress/
     }
+
 
     // goes back to the main screen with the notebook grid
     function closeDashboard() {
         document.getElementById("dashboardSection").classList.remove("active");
+        // removes the "active" class so the dashboard hides itself again
+
         document.getElementById("welcomeSection").style.display = "block";
+        // shows the big notebook grid again like you just left the domain
+
         currentSubject = "";
+        // resets the current subject so nothing is selected anymore
     }
 
+
     document.getElementById("searchInput").addEventListener("keyup", function () {
+        // adds an event listener to the search box that runs every time you release a key
+        // addEventListener and keyup:
+        // https://developer.mozilla.org/en-US/docs/Web/API/Element/keyup_event
+
         let searchValue = this.value.toLowerCase(); // keyup checks every time you release a key on the keyboard so its SUPER smooth
+        // grabs whatever the user typed and turns it into lowercase so the search is not picky about capital letters
+
 
         let notebookItems = document.querySelectorAll(".notebook-item"); // this is for the sidebar
+        // selects all the sidebar notebook links so we can hide or show them based on the search
+        // queryselectorall explained:
+        // https://www.w3schools.com/jsref/met_document_queryselectorall.asp
+
         notebookItems.forEach(item => {
+            // loops through each sidebar item
+
             let text = item.textContent.toLowerCase(); // makes it not case sensitive by reading the input as lowercase
+            // gets the text inside the item (like "cursed energy basics") and makes it lowercase too
+
             item.style.display = text.includes(searchValue) ? "block" : "none"; // checks if title has the thing you inputted
+            // if the text contains what you typed, it shows the item; otherwise, it hides it
+            // this is using a ternary operator (tiny if/else in one line), more here:
+            // https://www.w3schools.com/js/js_comparisons.asp
         });
 
+
         let notebookCards = document.querySelectorAll(".notebook-card"); // this is for the actual cards
+        // selects all the big subject cards in the grid
+
         notebookCards.forEach(card => {
+            // loops through each card
+
             let title = card.querySelector("h5").textContent.toLowerCase(); // again it makes it case insensitive
+            // gets the <h5> title inside the card and converts it to lowercase for the search
+
             card.style.display = title.includes(searchValue) ? "block" : "none"; // checks if the title includes what you inputted
+            // if the card title matches the search text, it stays visible, otherwise it vanishes like a defeated curse
         });
     });
+    // if you want more details about events and keyboard stuff:
+    // https://www.w3schools.com/js/js_events.asp
     </script>
 </body>
 </html>

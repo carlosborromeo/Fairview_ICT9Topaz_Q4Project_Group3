@@ -105,8 +105,9 @@
         }
         
         .main-content {
-            padding: 40px;
+            padding: 50px;
             color: #e0e0e0;
+            padding-left: 400px;
         }
         
         .main-content h1 {
@@ -325,7 +326,16 @@
             background: transparent;
         }
         
-        #Ongoing-Tasks {
+        #GThree-Tasks {
+            display: block;
+        }
+        #GTwo-Tasks {
+            display: block;
+        }
+        #GOne-Tasks {
+            display: block;
+        }
+        #SGrade-Tasks {
             display: block;
         }
         
@@ -342,8 +352,10 @@
             margin: 0;  
             text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
         }
-     
 
+        .page-spacer {
+            height: 120px;
+        }
     </style>
 </head>
 <body>    
@@ -371,52 +383,53 @@
 
     <div class="cursed-energy"></div>
     <div class="container-fluid">
+        <div class="col-md-9 col-lg-10 main-content">
+            <h1 class="text-center mb-2">Jujutsu High Training Portal</h1>
+            <p class="text-center lead">Access your classes' domains by clicking on the notebooks</p>
             
-            <div class="col-md-9 col-lg-10 main-content">
-                <h1 class="text-center mb-2">Jujutsu High Training Portal</h1>
-                <p class="text-center lead">Access your classes' domains by clicking on the notebooks</p>
-                
-                <div id="welcomeSection">
-                    <div class="tasks-options row g-8">
-                        <div class="tasks-options col-md-4" onclick="switchtasks('Missed Tasks')">
-                            <img src="https://i.pinimg.com/736x/62/fb/19/62fb1939b1f00d25be8657c29983b893.jpg" alt="Missed">
-                            <h5>Missed</h5>
-                            <div id="Missed-Tasks" class="dropdown-content" style="display: block;">
-                            </div>
-                        </div>
-                        <div class="tasks-options col-md-4" onclick="switchtasks('Completed Tasks')">
-                            <img src="https://i.pinimg.com/736x/62/fb/19/62fb1939b1f00d25be8657c29983b893.jpg" alt="Completed">
-                            <h5>Completed</h5>
-                            <div id="Completed-Tasks" class="dropdown-content">
-                            </div>
-                        </div>
-                        <div class="tasks-options col-md-4" onclick="switchtasks('Ongoing Tasks')">
-                            <img src="https://i.pinimg.com/736x/62/fb/19/62fb1939b1f00d25be8657c29983b893.jpg" alt="Ongoing">
-                            <h5>Ongoing</h5>
-                            <div id="Ongoing-Tasks" class="dropdown-content">
-                            </div>
-                        </div>
+            <div id="welcomeSection">
+                <div class="tasks-options row g-10">
+                    <div class="tasks-options col-md-3" onclick="switchtasks('GThree Tasks')">
+                        <img src="https://i.pinimg.com/736x/62/fb/19/62fb1939b1f00d25be8657c29983b893.jpg" alt="Grade 3">
+                        <h5>Grade 3</h5>
+                        <div id="GThree-Tasks" class="dropdown-content" style="display: block;"></div>
+                    </div>
+                    <div class="tasks-options col-md-3" onclick="switchtasks('GTwo Tasks')">
+                        <img src="https://i.pinimg.com/736x/62/fb/19/62fb1939b1f00d25be8657c29983b893.jpg" alt="Grade 2">
+                        <h5>Grade 2</h5>
+                        <div id="GTwo-Tasks" class="dropdown-content"></div>
+                    </div>
+                    <div class="tasks-options col-md-3" onclick="switchtasks('GOne Tasks')">
+                        <img src="https://i.pinimg.com/736x/62/fb/19/62fb1939b1f00d25be8657c29983b893.jpg" alt="Grade 1">
+                        <h5>Grade 1</h5>
+                        <div id="GOne-Tasks" class="dropdown-content"></div>
+                    </div>
+                    <div class="tasks-options col-md-3" onclick="switchtasks('SGrade Tasks')">
+                        <img src="https://i.pinimg.com/736x/62/fb/19/62fb1939b1f00d25be8657c29983b893.jpg" alt="Special Grade">
+                        <h5>Special Grade</h5>
+                        <div id="SGrade-Tasks" class="dropdown-content"></div>
                     </div>
                 </div>
             </div>
 
-                <div id="dashboardSection" class="dashboard">
-                    <h2 id="dashboardTitle" class="mb-3">Subject Domain</h2>
-                    <p id="dashboardInfo">Subject information will appear here.</p>
-                    
-                    <div class="mt-4">
-                        <button class="btn btn-custom" onclick="showNotes()">View Notes</button>
-                        <button class="btn btn-custom" onclick="showTasks()">View Tasks</button>
-                        <button class="btn btn-custom" onclick="closeDashboard()">Exit Domain</button>
-                    </div>
-                    
-                    <div id="dashboardContent" class="mt-4"></div>
+            <div id="dashboardSection" class="dashboard">
+                <h2 id="dashboardTitle" class="mb-3">Subject Domain</h2>
+                <p id="dashboardInfo">Subject information will appear here.</p>
+                
+                <div class="mt-4">
+                    <button class="btn btn-custom" onclick="showNotes()">View Notes</button>
+                    <button class="btn btn-custom" onclick="showTasks()">View Tasks</button>
+                    <button class="btn btn-custom" onclick="closeDashboard()">Exit Domain</button>
                 </div>
+                
+                <div id="dashboardContent" class="mt-4"></div>
             </div>
         </div>
     </div>
+
+    <div class="page-spacer"></div>
     
-    <footer>
+    <footer style="position: fixed; bottom: 0; width: 100%;">
         <div class="container">
             <p>© 2026 Jujutsu High - Tokyo Branch. All cursed energy reserved.</p>
             <p>
@@ -425,28 +438,58 @@
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
     window.onload = function () {
-    const missedCard  = document.getElementById("Missed-Tasks");
-    const completedCard = document.getElementById("Completed-Tasks");
-    const ongoingCard   = document.getElementById("Ongoing-Tasks");
+    // this runs after the whole page is loaded (i got this from w3schools onload event: https://www.w3schools.com/jsref/event_onload.asp)
 
-    if (missedCard) {
-        missedCard.innerHTML  = taskrngmis(); // random table for Missed
+
+    const GradeThreeCard  = document.getElementById("GThree-Tasks");
+    // grabs the div that will hold the randomly generated grade 3 tasks
+
+
+    const GradeTwoCard = document.getElementById("GTwo-Tasks");
+    // grabs the div that will hold the randomly generated grade 2 tasks
+
+
+    const GradeOneCard   = document.getElementById("GOne-Tasks");
+    // grabs the div that will hold the randomly generated grade 1 tasks
+
+
+    const SpecialGradeCard   = document.getElementById("SGrade-Tasks");
+    // grabs the div for special grade tasks (i fixed this id so it matches the html)
+
+
+    if (GradeThreeCard) {
+        GradeThreeCard.innerHTML  = taskrngGThree(); // random table for Three
+        // fills the grade 3 box with a random mission table when the page loads
     }
-    if (completedCard) {
-        completedCard.innerHTML = taskrngcom(); // random table for Completed
+    if (GradeTwoCard) {
+        GradeTwoCard.innerHTML = taskrngGTwo(); // random table for Two
+        // same idea but for grade 2 tasks
     }
-    if (ongoingCard) {
-        ongoingCard.innerHTML   = taskrngon(); // random table for Ongoing
+    if (GradeOneCard) {
+         GradeOneCard.innerHTML  = taskrngGOne(); // random table for One
+         // and this one is for grade 1 tasks
     }
+    if (SpecialGradeCard) {
+        SpecialGradeCard.innerHTML  = taskrngSG(); // random table for Special Grade
+        // special grade gets its own random task table too
     };
+    }
     let totalNotebooks = 12;
+    // same variable name as your other page, but here it’s not heavily used, just kept for consistency
+
+
     let currentSubject = "";
+    // will store which subject/domain is currently active when using the dashboard part
+
+
 
     // different colors cause super fun!
     const subjects = {
+        // this object stores the settings for each subject, like color and intro text (i used the same idea as before, based on js objects from here: https://www.w3schools.com/js/js_objects.asp)
+
+
         "Cursed Energy Basics": {
             color: "#e94560", // red cause JJK is red usually
             intro: "Fundamentals of cursed energy flow, perception, and control."
@@ -497,19 +540,28 @@
         }
     };
     const tasks = {
-        "Missed Tasks":   {
-            color: "#e94560" // Same color as the website as to not ruin any special effects
+        // this object stores how each task group should be styled (same color everywhere for now)
+
+
+        "SGrade Tasks":   {
+            color: "#e94560" // same color as the website as to not ruin any special effects
         },
-        "Completed Tasks":   {
-            color: "#e94560" // Same color as the website as to not ruin any special effect
+        "GOne Tasks":   {
+            color: "#e94560" // same color as the website as to not ruin any special effect
         },
-        "Ongoing Tasks":    {
-            color: "#e94560" // Same color as the website as to not ruin any special effect
+        "GTwo Tasks":    {
+            color: "#e94560" // same color as the website as to not ruin any special effect
+        },
+        "GThree Tasks":    {
+            color: "#e94560" // same color as the website as to not ruin any special effect
         }
     };
     
 
-    const tasksopmis = [
+    const tasksopThree = [
+        // this array contains all possible missions for grade 3 (i used array syntax from here: https://www.w3schools.com/js/js_arrays.asp)
+
+
         "Exorcise a grade 3 curse haunting a school basement.",            
         "Do 30 minutes of Shikigami Training in the courtyard.",
         "Reinforce your body with cursed energy for 30 minutes of combat drills.",
@@ -517,24 +569,32 @@
         "Investigate an incident regarding a Heavenly Restriction user.",
         "Practice reverse cursed technique on minor injuries in the infirmary.",
         "Arrest Bumta on the case of pedophilia and child abuse.",
-        "Hunt grade 1 curses on an exorcism mission in a rural village.",
+        "Hunt grade 3 curses on an exorcism mission in a rural village.",
         "Defend Shibuya from a curse invasion.",
         "Patrol the city for unregistered curses before people arrive."
     ];
 
-    const tasksopon = [
+
+    const tasksopTwo = [
+        // all possible tasks for grade 2 missions
+
+
         "Investigate the death of a student in the school basement.",            
         "Fix the rubble surrounding shibuya.",
-        "Practice using Cursed Energy Reinforcement on a grade 1 curse.",
+        "Practice using Cursed Energy Reinforcement on a grade 2 curse.",
         "Train domain expansion under the guidance of Satoru Gojo.",
         "Find the cause of the death of Naobito Zenin.",
         "Investigate the mysterious disappearance of a student.",
         "Protect a civilian from a grade 2 curse.",
         "Find the curse with the patchwork face.",
-        "Defeat Ryomen Sukuna."
+        "Learn about Ryomen Sukuna."
     ];
 
-    const tasksopcom = [
+
+    const tasksopOne = [
+        // all possible tasks for grade 1 missions
+
+
         "Assist in the training of first-year students.",
         "Help maintain the school grounds and facilities.",
         "Participate in a group training exercise with classmates.",
@@ -546,18 +606,101 @@
         "Obtain the Inverted Spear of Heaven from the Zenin family vault.",
         "Obtain a cursed technique"
     ];
+    const tasksopSpecialGrade = [
+        // all possible tasks for special grade missions (aka the "you might die" list)
 
-    // How tasks are when the site loads.
-    function taskrngmis() {
+
+        "Assist in the training of first-year students.",
+        "Train Itadori Yuji.",
+        "Defeat The Patchwork faced curse.",
+        "Teach a lecture on cursed techniques.",
+        "Discover a new cursed technique.",
+        "Defeat Toji Fushiguro.",
+        "Defeat Dagon.",
+        "Enter the culling game",
+        "Put the Inverted Spear of Heaven in the Jujutsu High Vault.",
+        "Protect Riko Amanai on the way to the Star Plasma Vessel ceremony."
+    ];
+
+
+    // how tasks are when the site loads.
+    function taskrngGThree() {
+        // this function creates a random table of grade 3 tasks using the tasksopThree list
+
+
+        let tasknow = "<table class='table table-dark table-sm mb-0'>";
+        // starts building a table using bootstrap table classes
+
+
+        tasknow += "<thead><tr><th>Mission</th></tr></thead>";
+        // adds a table header row with the title "mission"
+
+
+        tasknow += "<tbody>";
+        // starts the table body where each task will be a row
+
+
+
+        const pool = tasksopThree.slice();
+        // makes a shallow copy of the grade 3 task list so we can remove used tasks without affecting the original array
+        // the slice trick is something i got from the array methods page: [https://www.w3schools.com/js/js_array_methods.asp](https://www.w3schools.com/js/js_array_methods.asp)
+        
+        const howMany = Math.min(
+        pool.length,
+        Math.floor(Math.random() * 4) + 5
+        );
+        // chooses a random number of tasks between 5 and 8, but never more than the pool size
+        // Math.random and Math.floor idea came from here: [https://www.w3schools.com/js/js_random.asp](https://www.w3schools.com/js/js_random.asp)
+
+
+
+    for (let i = 0; i < howMany; i++) {
+        // loop that runs "howMany" times to pick random tasks
+
+
+        const randomIndex = Math.floor(Math.random() * pool.length);
+        // pick a random index from the remaining pool
+
+
+        const task = pool[randomIndex];
+        // get the task string at that random index
+
+
+
+        pool.splice(randomIndex, 1);
+        // remove that task from the pool so it doesn’t get picked again (no duplicate missions)
+
+
+
+        tasknow += "<tr><td>" + task + "</td></tr>";
+        // add a new table row with the chosen task
+    }
+
+
+
+    tasknow += "</tbody></table>";
+    // closes the table body and table tags
+
+
+    return tasknow;
+    // returns the finished html table as a string so window.onload can insert it
+    }
+
+
+    function taskrngGTwo() {
+        // same logic as taskrngGThree but using the grade 2 task list
+
+
         let tasknow = "<table class='table table-dark table-sm mb-0'>";
         tasknow += "<thead><tr><th>Mission</th></tr></thead>";
         tasknow += "<tbody>";
 
-        const pool = tasksopmis.slice();
+
+        const pool = tasksopTwo.slice();
         
         const howMany = Math.min(
         pool.length,
-        Math.floor(Math.random() * 3) + 5
+        Math.floor(Math.random() * 4) + 5
         );
 
 
@@ -565,113 +708,190 @@
         const randomIndex = Math.floor(Math.random() * pool.length);
         const task = pool[randomIndex];
 
+
         pool.splice(randomIndex, 1);
+
 
         tasknow += "<tr><td>" + task + "</td></tr>";
     }
+
 
 
     tasknow += "</tbody></table>";
     return tasknow;
     }
 
-    function taskrngon() {
+
+    function taskrngGOne() {
+        // same logic but for grade 1 missions
+
+
         let tasknow = "<table class='table table-dark table-sm mb-0'>";
         tasknow += "<thead><tr><th>Mission</th></tr></thead>";
         tasknow += "<tbody>";
 
-        const pool = tasksopon.slice();
+
+        const pool = tasksopOne.slice();
         
         const howMany = Math.min(
         pool.length,
-        Math.floor(Math.random() * 3) + 5
+        Math.floor(Math.random() * 4) + 5
         );
+
 
 
     for (let i = 0; i < howMany; i++) {
         const randomIndex = Math.floor(Math.random() * pool.length);
         const task = pool[randomIndex];
 
+
         pool.splice(randomIndex, 1);
+
 
         tasknow += "<tr><td>" + task + "</td></tr>";
     }
 
 
+
     tasknow += "</tbody></table>";
     return tasknow;
     }
+    function taskrngSG() {
+        // and of course, the same idea again but for special grade missions
 
-    function taskrngcom() {
+
         let tasknow = "<table class='table table-dark table-sm mb-0'>";
         tasknow += "<thead><tr><th>Mission</th></tr></thead>";
         tasknow += "<tbody>";
 
-        const pool = tasksopcom.slice();
+
+        const pool = tasksopSpecialGrade.slice();
         
         const howMany = Math.min(
         pool.length,
-        Math.floor(Math.random() * 2) + 3
+        Math.floor(Math.random() * 4) + 5
         );
+
 
 
     for (let i = 0; i < howMany; i++) {
         const randomIndex = Math.floor(Math.random() * pool.length);
         const task = pool[randomIndex];
 
+
         pool.splice(randomIndex, 1);
+
 
         tasknow += "<tr><td>" + task + "</td></tr>";
     }
 
 
+
     tasknow += "</tbody></table>";
-    return tasknow;
+        return tasknow;
     }
- 
+
 
     // opens the specific subject domain and hides the main screen with all the notebooks
     function openDashboard(subject) {
+        // this function is ready if you ever hook tasks to subjects on this page too
+
+
         currentSubject = subject;
+        // remember which subject is active
+
+
 
         document.getElementById("welcomeSection").style.display = "none"; // hide welcome
+        // hide the big task selection area
+
+
         document.getElementById("dashboardSection").classList.add("active"); // show dashboard
+        // show the dashboard panel with notes/tasks buttons
+
+
 
         const config = subjects[subject] || { color: "#e94560", intro: "" }; // checks the part above this for the settings for the subject
+        // if the subject exists in the subjects object, use that, if not, use a default config
+        // this pattern with || fallback is based on basic js logic from w3schools comparisons: [https://www.w3schools.com/js/js_comparisons.asp](https://www.w3schools.com/js/js_comparisons.asp)
+
+
 
         const titleEl = document.getElementById("dashboardTitle"); // some visual stuff
+        // get the title element that says "subject domain"
+
+
         titleEl.innerHTML = subject + " Domain";
+        // change the text so it shows which domain you entered
+
+
         titleEl.style.color = config.color;
+        // set the title color based on the subject config
+
+
         titleEl.style.textShadow = "0 0 15px " + config.color;
+        // give it a matching glow because we like drama
+
+
 
         document.getElementById("dashboardInfo").innerHTML =
             config.intro +
             " Welcome to the " + subject +
             " training domain. Here you can see your notes, remaining tasks, and monitor your progress.";
+        // build a little intro message using the subject’s custom intro text
+
+
 
         document.getElementById("dashboardContent").innerHTML =
             "<div class='alert alert-dark text-light mb-0'>" +
             "<strong>Subject:</strong> " + subject + "<br>" +
             "</div>";
+        // start the dashboard content area with a small alert box showing the current subject
     }
+
 
     // displays dummy notes for the selected subject
     function showNotes() { // to save time and meet the requirements i added a for loop
         let notesHTML = "<h4>Notes for " + currentSubject + "</h4><ul>";
+        // start a header and a list for the notes
+
+
         for (let i = 1; i <= 5; i++) {// set i to 1, check if i is less than or equal to 5, then add i using an increment every time the code block under this is executed (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Increment)
+            // this loop runs 5 times, making 5 placeholder notes (i got this for loop structure from mdn’s for statement docs: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for)
+
+
             notesHTML += "<li>Note " + i + " - Important note for " + currentSubject + "</li>";
+            // adds a list item like "note 1 - important note for cursed energy basics"
         }// basic concatenation of text and variable
+
+
         notesHTML += "</ul>"; // close the ul
+        // close the <ul> tag so the list is valid html
+
+
         document.getElementById("dashboardContent").innerHTML = notesHTML; // basically just prints everything
+        // insert the generated list of notes into the dashboard content area
     }
+
 
     // displays mission/task progress for the selected subject (including percentage!)
     function showTasks() {
         let taskCount = Math.floor(Math.random() * (7 - 4 + 1)) + 4; // task amount is between 4 and 7
+        // this math gives you a random integer from 4 to 7 (inclusive), and i followed the same random pattern from w3schools here: [https://www.w3schools.com/js/js_random.asp](https://www.w3schools.com/js/js_random.asp)
+
+
         let completed = Math.floor(Math.random() * 4) + 1; // just a random number between 1 and 3
+        // random number of completed missions (small so you look human and not gojo-level efficient)
+
+
         let remaining = taskCount - completed; // number of "tasks left to do" even if you can't really do anything
+        // simple math to get how many missions are not done yet
+
+
 
         // the side effect of this ^ is that it randomly generates a number every time you click the button
+
+
 
         document.getElementById("dashboardContent").innerHTML = // just writing a bunch of text to label the values
             "<h4>Tasks for " + currentSubject + "</h4>" +
@@ -682,33 +902,32 @@
             "<div class='progress-bar bg-danger' style='width: " + (completed / taskCount * 100) + "%'>" +
             Math.round(completed / taskCount * 100) + "%</div>" + // percentage maker
 
+
+
             // also i learned that doing + "%</div>" is so much easier than + "%" + "<div>"
 
+
+
             "</div>";
+        // builds a bootstrap progress bar showing your completion percent for this subject’s tasks
+        // progress bar styling is based on the bootstrap docs: [https://getbootstrap.com/docs/5.3/components/progress/](https://getbootstrap.com/docs/5.3/components/progress/)
     }
+
 
     // goes back to the main screen with the notebook grid
     function closeDashboard() {
         document.getElementById("dashboardSection").classList.remove("active");
+        // hides the dashboard by removing the active class
+
+
         document.getElementById("welcomeSection").style.display = "block";
+        // shows the main task selection area again
+
+
         currentSubject = "";
+        // reset the currently selected subject to nothing
     }
 
-    document.getElementById("searchInput").addEventListener("keyup", function () {
-        let searchValue = this.value.toLowerCase(); // keyup checks every time you release a key on the keyboard so its SUPER smooth
-
-        let notebookItems = document.querySelectorAll(".notebook-item"); // this is for the sidebar
-        notebookItems.forEach(item => {
-            let text = item.textContent.toLowerCase(); // makes it not case sensitive by reading the input as lowercase
-            item.style.display = text.includes(searchValue) ? "block" : "none"; // checks if title has the thing you inputted
-        });
-
-        let notebookCards = document.querySelectorAll(".notebook-card"); // this is for the actual cards
-        notebookCards.forEach(card => {
-            let title = card.querySelector("h5").textContent.toLowerCase(); // again it makes it case insensitive
-            card.style.display = title.includes(searchValue) ? "block" : "none"; // checks if the title includes what you inputted
-        });
-    });
     </script>
 </body>
 </html>

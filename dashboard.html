@@ -495,6 +495,70 @@
                 background: rgba(0, 0, 0, 0.7);
             }
         }
+
+        .black-flash-glitch-wrapper {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .black-flash-glitch {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            position: relative;
+            color: #ffffff;
+            text-shadow: 0.05em 0 0 #00fffc,
+                         -0.03em -0.04em 0 #fc00ff,
+                         0.025em 0.04em 0 #fffc00;
+            opacity: 0;
+        }
+
+        .black-flash-glitch-active {
+            animation: glitch 725ms infinite;
+            opacity: 1;
+        }
+
+        @keyframes glitch {
+            0% {
+                text-shadow: 0.05em 0 0 #00fffc,
+                             -0.03em -0.04em 0 #fc00ff,
+                             0.025em 0.04em 0 #fffc00;
+            }
+            15% {
+                text-shadow: 0.05em 0 0 #00fffc,
+                             -0.03em -0.04em 0 #fc00ff,
+                             0.025em 0.04em 0 #fffc00;
+            }
+            16% {
+                text-shadow: -0.05em -0.025em 0 #00fffc,
+                             0.025em 0.035em 0 #fc00ff,
+                             -0.05em -0.05em 0 #fffc00;
+            }
+            49% {
+                text-shadow: -0.05em -0.025em 0 #00fffc,
+                             0.025em 0.035em 0 #fc00ff,
+                             -0.05em -0.05em 0 #fffc00;
+            }
+            50% {
+                text-shadow: 0.05em 0.035em 0 #00fffc,
+                             0.03em 0 0 #fc00ff,
+                             0 -0.04em 0 #fffc00;
+            }
+            99% {
+                text-shadow: 0.05em 0.035em 0 #00fffc,
+                             0.03em 0 0 #fc00ff,
+                             0 -0.04em 0 #fffc00;
+            }
+            100% {
+                text-shadow: -0.05em 0 0 #00fffc,
+                             -0.025em -0.04em 0 #fc00ff,
+                             -0.04em -0.025em 0 #fffc00;
+            }
+        }
     </style>
 </head>
 <body>
@@ -649,6 +713,9 @@
                                     <div class="mini-game-title">Punch the Dummy!</div>
                                     <div class="mini-game-note">Hit the dummy as much as you can!</div>
                                     <div id="scoreDisplay" class="fw-bold text-danger">Score: 0</div>
+                                    <div class="black-flash-glitch-wrapper">
+                                        <div id="blackFlashText" class="black-flash-glitch">BLACK FLASH</div>
+                                    </div>
                                     <img id="curse-target" src="https://cdn-icons-png.flaticon.com/512/1071/1071098.png" alt="Curse" onclick="simulateMinigame()">
                                 </div>
                             </div>
@@ -660,12 +727,13 @@
         </div>
     </div>
 
-    <audio id="blackFlash1">
-        <source src="blackFlash1" type="audio/mpeg">
+
+    <audio id="blackFlash1" preload="auto">
+        <source src="blackFlash1.mp3" type="audio/mpeg">
     </audio>
 
-    <audio id="blackFlash2">
-        <source src="blackFlash2" type="audio/mpeg">
+    <audio id="blackFlash2" preload="auto">
+        <source src="blackFlash2.mp3" type="audio/mpeg">
     </audio>
 
     <footer>
@@ -680,128 +748,258 @@
         </div>
     </footer>
 
+
     <script>
         const scheddy = {
-            Monday: [
+            // create an object to hold the class schedule
+            Tuesday: [
+                // monday schedule is an array of class objects
                 { time: "08:00 AM", subject: "Cursed Energy Basics", room: "<strike class='text-secondary'>Practice Hall 01</strike> Practice Hall 02" },
+                // first class: 8am cursed energy basics, room changed from hall 01 to 02
                 { time: "10:00 AM", subject: "Curse Identification", room: "Field Lab 02" },
+                // second class: 10am curse identification in field lab 02
                 { time: "1:30 PM", subject: "<strike class='text-secondary'>Barrier Geometry</strike>", room: "<strike class='text-secondary'>Barrier Dome</strike>" },
+                // third class cancelled (striked through) due to exorcism
                 { time: "4:00 PM", subject: "Independent Study", room: "Dormitory" }
+                // final class: study alone in dorm at 4pm
             ]
         };
+        // where i got all the array stuff from (i used this like the first activity): https://www.w3schools.com/js/js_objects.asp
 
         const taskTemplates = [
+            // create an array of homework/task templates to display
             {
                 title: "HW2: Combat Log with Partner",
+                // task name - fight someone and write it down
                 subject: "Cursed Energy Basics",
+                // which class this is for
                 due: "Today • 11:59 PM",
+                // deadline is tonight
                 urgency: "danger"
+                // super urgent = red danger color
             },
             {
                 title: "SW3: Triple-Layer Barrier Propagation",
+                // build a barrier thingy for class
                 subject: "Barrier Geometry",
+                // barrier class homework
                 due: "Tomorrow • 4:00 PM",
+                // due tomorrow afternoon
                 urgency: "warning"
+                // kinda urgent = orange warning color
             },
             {
                 title: "Practical Activity: Field Encounter Analysis",
+                // analyze a curse fight that happened
                 subject: "Curse Identification",
+                // from curse identification class
                 due: "Friday • 9:44 PM",
+                // due friday night
                 urgency: "normal"
+                // not urgent = green normal color
             },
             {
                 title: "Skills Test: Tool Synchronicity",
+                // test on using cursed tools
                 subject: "Cursed Tool Proficiency",
+                // from tool class
                 due: "January 20, 2027",
+                // due way later next year lol
                 urgency: "normal"
+                // not urgent at all
             }
         ];
+        // arrays: https://www.w3schools.com/js/js_arrays.asp
 
         const scheduleListEl = document.getElementById("scheduleList");
+        // get the empty ul where schedule will go
         const tasksListEl = document.getElementById("tasksList");
+        // get the empty ul where tasks will go
         const scheduleDayEl = document.getElementById("scheduleDay");
+        // get the span that shows what day it is
+        // more about getelementbyid and the dom: https://www.w3schools.com/jsref/met_document_getelementbyid.asp
+
+        // get the BLACK FLASH text element so we can turn the glitch on and off
+        const blackFlashTextEl = document.getElementById("blackFlashText");
+        // keep a timeout id so we can cancel or manage the effect timing if needed later
+        let blackFlashTimeoutId = null;
 
         function renderSchedule(schedyule) {
+            // function to draw the schedule on the page
             const entries = scheddy[schedyule] || [];
+            // grab monday's classes from scheddy object or empty array if not found
             scheduleListEl.innerHTML = "";
+            // clear any old schedule stuff first
             entries.forEach(item => {
+                // loop through each class in the schedule array
                 const li = document.createElement("li");
+                // make a new list item element
                 li.className = "schedule-item";
+                // give it the css class for styling
                 li.innerHTML =
                     "<div>" +
+                    // start a div container
                     "<div class='schedule-time'>" + item.time + "</div>" +
+                    // add time like 8:00 am
                     "<div class='schedule-subject'>" + item.subject + "</div>" +
+                    // add class name like cursed energy basics
                     "<div class='schedule-room'>" + item.room + "</div>" +
+                    // add room number like practice hall 02
                     "</div>" +
                     "<span class='badge-soft'>On schedule</span>";
+                // add a little badge saying on schedule
                 scheduleListEl.appendChild(li);
+                // put this li into the schedule ul
             });
         }
+        // more about changing html with javascript: https://www.w3schools.com/js/js_htmldom_html.asp
+
 
         function renderTasks() {
+            // function to draw the task list on the page
             tasksListEl.innerHTML = "";
+            // wipe the task list clean first
             taskTemplates.forEach(task => {
+                // loop through each task in templates
                 const li = document.createElement("li");
+                // create new list item
                 li.className = "task-item";
+                // add styling class
                 let pillClass = "task-pill";
+                // start with default green pill class
                 if (task.urgency === "danger") pillClass += " task-pill-danger";
+                // if urgent add red class
                 if (task.urgency === "warning") pillClass += " task-pill-warning";
+                // if kinda urgent add orange class
                 li.innerHTML =
                     "<div class='task-main'>" +
+                    // wrapper div for text
                     "<span class='task-title'>" + task.title + "</span>" +
+                    // show task name like hw2 combat log
                     "<span class='task-meta'>" + task.subject + " • " + task.due + "</span>" +
+                    // show class and due date under title
                     "</div>" +
                     "<span class='" + pillClass + "'>" +
+                    // open urgency pill with right color class
                     (task.urgency === "danger" ? "Due Immediately" : task.urgency === "warning" ? "Deadline Soon" : "Not Urgent") +
+                    // pick right text based on urgency level
                     "</span>";
+                // close the pill
                 tasksListEl.appendChild(li);
+                // add li to the ul
             });
         }
 
-        let score = 0;
-        function simulateMinigame() {
-            score++;
-            document.getElementById("scoreDisplay").innerText = "Score: " + score;
-            const target = document.getElementById("curse-target");
-            const container = document.getElementById("minigameContainer");
-            
-            const maxX = container.clientWidth - target.clientWidth;
-            const maxY = container.clientHeight - target.clientHeight - 40;
-            
-            const newX = Math.random() * maxX;
-            const newY = Math.random() * maxY;
-            
-            target.style.position = "absolute";
-            target.style.left = newX + "px";
-            target.style.top = newY + "px";
-        
-            let roll = Math.floor(Math.random() * 2) + 1;
 
-            if (roll === 1) {
-                const sfx1 = document.getElementById("blackFlash1");
-                const sfx2 = document.getElementById("blackFlash2");
-                if (sfx1) {
-                    sfx1.currentTime = 0;
-                    sfx1.play();
-                }
-                if (sfx2) {
-                    sfx2.currentTime = 0;
-                    sfx2.play();
-                }
-                container.classList.remove("black-flash-effect");
-                void container.offsetWidth;
-                container.classList.add("black-flash-effect");
-                setTimeout(function () {
-                    container.classList.remove("black-flash-effect");
-                }, 1000);
-            } else {
-                console.log("Failed. Rolled: " + roll);
+        let score = 0;
+        // keep track of punches like a game score
+
+        // helper function to trigger and then stop the glitch text effect
+        function triggerBlackFlashGlitch() {
+            // if an earlier timeout is still waiting, clear it so they do not fight each other
+            if (blackFlashTimeoutId !== null) {
+                clearTimeout(blackFlashTimeoutId);
+                // reset the timeout id back to nothing so we know there is no active timer
+                blackFlashTimeoutId = null;
             }
+            // add the active glitch class so the BLACK FLASH text goes wild with the effect
+            blackFlashTextEl.classList.add("black-flash-glitch-active");
+            // set up a timer to turn the glitch off after 1 second (so it does not stay forever)
+            blackFlashTimeoutId = setTimeout(() => {
+                // remove the glitch class so the text calms down again
+                blackFlashTextEl.classList.remove("black-flash-glitch-active");
+                // clear the timeout id since we are done with this glitch cycle
+                blackFlashTimeoutId = null;
+            }, 1000);
         }
 
-        renderSchedule("Monday");
+        function simulateMinigame() {
+            // this whole thing runs when you click the dummy
+            score++;
+            // add one point for punching
+            document.getElementById("scoreDisplay").innerText = "Score: " + score;
+            // update the score text on screen
+            const target = document.getElementById("curse-target");
+            // get the dummy image element
+            const container = document.getElementById("minigameContainer");
+            // get the box the dummy is in
+
+
+            const maxX = container.clientWidth - target.clientWidth;
+            // calculate max x position so dummy stays inside box
+            const maxY = container.clientHeight - target.clientHeight - 40;
+            // calculate max y position also leaving room for text
+
+
+            const newX = Math.random() * maxX;
+            // pick random x spot inside the box
+            const newY = Math.random() * maxY;
+            // pick random y spot inside the box
+            // random stuff explained here: https://www.w3schools.com/jsref/jsref_random.asp
+
+
+            target.style.position = "absolute";
+            // allow absolute positioning within container
+            target.style.left = newX + "px";
+            // move to random x location
+            target.style.top = newY + "px";
+            // move to random y location
+
+
+            let roll = Math.floor(Math.random() * 5) + 1;
+            // roll a d5 giving number 1-5 for randomness
+            // random ints guide: https://www.w3schools.com/js/js_random.asp
+
+
+            if (roll === 1) {
+                // 1 in 5 chance (20%) this happens = black flash
+                const sfx1 = document.getElementById("blackFlash1");
+                // get first sound effect
+                const sfx2 = document.getElementById("blackFlash2");
+                // get second sound effect
+
+
+                if (sfx1) {
+                    // if audio exists try playing it
+                    sfx1.currentTime = 0;
+                    // start from beginning
+                    sfx1.play().catch();
+                    // play sound w hack to stop error
+                }
+                if (sfx2) {
+                    // same thing as above for second sound
+                    sfx2.currentTime = 0;
+                    sfx2.play().catch();
+                }
+
+
+                container.classList.remove("black-flash-effect");
+                // remove class to reset animation
+                void container.offsetWidth;
+                // weird trick to make browser restart animation
+                container.classList.add("black-flash-effect");
+                // add class back to trigger white/pink flash
+
+                // also trigger the BLACK FLASH glitch text so it appears with the special hit
+                triggerBlackFlashGlitch();
+
+                setTimeout(function () {
+                    // wait some time then cleanup
+                    container.classList.remove("black-flash-effect");
+                    // remove flash class so it stops glowing
+                }, 1000);
+                // wait 1 second before removing
+                // timing explanation: https://www.w3schools.com/js/js_timing.asp
+                }
+        }
+
+
+        renderSchedule("Tuesday");
+        // call function to show monday schedule now
         renderTasks();
+        // call function to show task list now
         scheduleDayEl.textContent = "Today: Tuesday";
+        // hardcode the day display to tuesday
     </script>
 </body>
 </html>

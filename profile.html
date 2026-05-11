@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Jujutsu High Virtual Notebook</title>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
+   <style>
+      body {
+         font-family:'Google Sans', sans-serif;
+         background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);
+         min-height:100vh;
+         color:#e0e0e0;
+      }
+
+
+      .navbar-custom {
+         background:rgba(0,0,0,0.9);
+         border-bottom:3px solid #e94560;
+         padding:10px 20px;
+      }
+
+
+      .navbar-brand img {
+         width:40px;
+         height:40px;
+         border:2px solid #e94560;
+         transition: transform 0.5s ease, box-shadow 0.5s ease;
+      }
+
+
+      /* this was so fun to make sir */
+      .navbar-brand img:hover {
+         transform:rotate(360deg) scale(1.2);
+         box-shadow:0 0 15px #e94560;
+      }
+
+
+      .nav-link {
+         color:#e0e0e0 !important;
+         font-weight:500;
+         margin:0 10px;
+         transition: color 0.3s, text-shadow 0.3s;
+      }
+
+
+      .nav-link:hover {
+         color:#e94560 !important;
+         text-shadow:0 0 10px #e94560;
+      }
+      
+      .main-content {
+         padding:40px;
+         color:#e0e0e0;
+      }
+      
+      .main-content h1 {
+         color:#e94560;
+         text-shadow:0 0 20px #e94560;
+         font-weight: bold;
+      }
+      
+      @keyframes pulse {
+         0%, 100% {opacity:1; }
+         50% {opacity:0.5; }
+      }
+      
+      @keyframes fadeIn {
+         from {opacity:0;transform:translateY(20px); }
+         to {opacity:1;transform:translateY(0); }
+      }
+      
+      .btn-custom {
+         margin:5px;
+         border-radius:25px;
+         padding:10px 25px;
+         font-weight: bold;
+         border:2px solid #e94560;
+         background:rgba(233,69,96,0.2);
+         color:#e0e0e0;
+         transition: all 0.3s;
+      }
+      
+      .btn-custom:hover {
+         background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);
+         color: white;
+         box-shadow:0 0 20px #e94560;
+         transform:scale(1.05);
+      }
+      
+      .alert {
+         background:rgba(233,69,96,0.2);
+         border:2px solid #e94560;
+         color:#ffffff;
+         border-radius:15px;
+      }
+      
+      footer {
+         background:rgba(0,0,0,0.9);
+         border-top:3px solid #e94560;
+         color:#e0e0e0;
+         padding:20px 0;
+         margin-top:40px;
+         text-align: center;
+         box-shadow:0 -5px 20px rgba(233,69,96,0.3);
+      }
+      
+      footer a {
+         color:rgb(255,215,120);
+         text-decoration: none;
+         transition: all 0.3s;
+      }
+      
+      footer a:hover {
+         color:#e94560;
+         text-shadow:0 0 10px #e94560;
+      }
+      
+      .cursed-energy {/* took a looooong time to get right*/
+         position: fixed;
+         top:0;
+         left:0;
+         width:100%;
+         height:100%;
+         pointer-events: none;
+         z-index:-1;
+         background:repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 10px,
+            rgba(233,69,96,0.03) 10px,
+            rgba(233,69,96,0.03) 20px
+         );
+      }
+
+
+      .jujuhigh {
+         color:#e94560;
+         font-weight: bold;
+         text-shadow:0 0 10px #e94560;
+         font-size:1.5rem;
+      }
+
+
+      .profile-wrapper {
+         margin-top:80px;
+         margin-bottom:80px;
+      }
+
+
+      .card {
+         background:rgba(0,0,0,0.9);
+         border:3px solid #e94560;
+         color:#e0e0e0;
+         text-align: center;
+         box-shadow:0 -5px 20px rgba(233,69,96,0.3);
+      }
+
+
+      .card img {
+         width:200px;
+      }
+
+
+      .cardinfo{
+         background:rgba(0,0,0,0.9);
+         border:3px solid #e94560;
+         color:#e0e0e0;
+         text-align: center;
+         box-shadow:0 -5px 20px rgba(233,69,96,0.3);
+         height:100%;
+      }
+
+
+      .cardjujutsu {
+         background:rgba(0,0,0,0.9);
+         border:3px solid #e94560;
+         color:#e0e0e0;
+         text-align: center;
+         box-shadow:0 -5px 20px rgba(233,69,96,0.3);
+         margin-top:20px;
+      }
+   </style>
+</head>
+<body>
+
+
+      <!-- DISCLAIMER:
+           sir, I did not use any AI in making this. I am using knowledge from hours of tutorials by w3Schools, Bro Code (my favorite coding youtuber (https://youtu.be/lfmg-EJ8gm4,https://www.youtube.com/watch?v=HGTJBPNC-Gw) (i didn't finish the whole video but i skipped to the parts that are relevant to the activity)), and knowledge that i got from online forums talking about how to do xyz.
+        -->
+
+
+   <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+      <div class="container-fluid">
+         <a class="navbar-brand" href="dashboard.html">
+            <img src="https://i.pinimg.com/736x/62/fb/19/62fb1939b1f00d25be8657c29983b893.jpg" alt="Logo" class="rounded-circle">
+         </a>
+         <ul class="navbar-nav ms-auto">
+            <li class="jujuhigh"><a class="nav-link h3" href="dashboard.html">Jujutsu High School</a></li>
+         </ul>
+         <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+               <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+               <li class="nav-item"><a class="nav-link" href="notebooks.html">Virtual Notebook</a></li>
+               <li class="nav-item"><a class="nav-link" href="tasks.html">Tasks</a></li>
+               <li class="nav-item"><a class="nav-link" href="profile.html">Profile</a></li>
+            </ul>
+         </div>
+      </div>
+   </nav>
+
+
+   <div class="cursed-energy"></div>
+
+
+   <div class="container profile-wrapper">
+      <div class="row g-4 align-items-stretch">
+         <div class="col-md-4">
+            <div class="card py-4">
+               <div class="container-fluid">
+                  <img id="profilepic" src="https://storage.googleapis.com/oa_disk001/obfairview/67/employee_files/637/profile_pictures/1756348095-3112.png" class="rounded-circle" alt="profile.picture">
+               </div>
+            </div>
+         </div>
+         <div class="col-md-8">
+            <div class="cardinfo p-4">
+               <h1>Personal Information</h1>
+               <p>NAME: Renn S. Santos
+                  <br>
+                  <span style="color: #e94560; ">Admin</span>
+                  <br><br>
+                  <span style="color: rgba(255, 255, 255, 0.5);">Student ID</span>
+                  <br>
+                  0000001
+                  <br><br>
+                  <span style="color: rgba(255, 255, 255, 0.5);">Contact Number</span>
+                  <br>
+                  ****-****-****
+                  <br><br>
+                  <span style="color: rgba(255, 255, 255, 0.5);">Email Address</span>
+                  <br>
+                  rennsantos@jujutsuhigh.edu.jp
+                  <br><br>
+                  <span style="color: rgba(255, 255, 255, 0.5);">Gender</span>
+                  <br>
+                  Male
+               </p>
+            </div>
+         </div>
+      </div>
+
+
+      <div class="row">
+         <div class="col-12">
+            <div class="cardjujutsu p-3">
+               <p style="margin-bottom: 0;">Cursed Techniques</p>
+               <ul style="text-align:left; margin-top:10px; margin-bottom:0;">
+                  <li>Limitless</li>
+                  <li>Ten Shadows Technique</li>
+                  <li>Shrine</li>
+                  <li>Black Flash</li>
+                  <li>Cursed Spirit Manipulation</li>
+                  <li>Straw Doll Technique</li>
+                  <li>Blood Manipulation</li>
+                  <li>Cursed Speech</li>
+                  <li>Boogie Woogie</li>
+                  <li>Idle Transfiguration</li>
+                  <li>Ratio Technique</li>
+                  <li>Projection Sorcery</li>
+                  <li>Disaster Flames</li>
+                  <li>Disaster Plants</li>
+                  <li>Rot Technique</li>
+                  <li>Ice Formation</li>
+                  <li>Antigravity System</li>
+                  <li>Black Bird Manipulation</li>
+                  <li>Auspicious Beasts Summon</li>
+                  <li>Construction</li>
+                  <li>Copy</li>
+                  <li>Cloning Technique</li>
+                  <li>Comedian</li>
+                  <li>Contractual Re-Creation</li>
+                  <li>Cursed Energy Discharge</li>
+                  <li>Puppet Manipulation</li>
+                  <li>Heavenly Restriction</li>
+                  <li>Private Pure Love Train</li>
+                  <li>Star Rage</li>
+                  <li>Sky Manipulation</li>
+                  <li>Judgeman</li>
+               </ul>
+            </div>
+         </div>
+      </div>
+   </div>
+      
+   <footer>
+      <div class="container">
+         <p>© 2026 Jujutsu High - Tokyo Branch. All cursed energy reserved.</p>
+         <p>
+            Carlos Borromeo, Christopher De Vera, Philip Ponce, Jacob Sherburn
+         </p>
+         <p>
+            <a href="https://jujutsu-kaisen.fandom.com/wiki/Jujutsu_Kaisen_Wiki" target="_blank">Jujutsu Kaisen Wiki</a>
+         </p>
+      </div>
+   </footer>
+
+   <script>
+      // this runs after the whole page is loaded (same idea as window.onload from w3schools: https://www.w3schools.com/jsref/event_onload.asp)
+      window.onload = function () {
+
+
+         const profilePic = document.getElementById("profilepic");
+         // grabs the img element for the profile picture so we can add a tiny interactive effect
+
+
+         const cursedCard = document.querySelector(".cardjujutsu");
+         // gets the cursed techniques card so we can show a small message inside it
+
+
+         // simple click event to show that js is working (pattern based on addEventListener from here: https://www.w3schools.com/js/js_htmldom_eventlistener.asp)
+         profilePic.addEventListener("click", function () {
+            alert("It's you.");
+            // shows a fun alert when you click the profile image, just for interaction
+         });
+
+
+         // hover effect on cursedCard removed as requested
+      };
+   </script>
+</body>
+</html>
